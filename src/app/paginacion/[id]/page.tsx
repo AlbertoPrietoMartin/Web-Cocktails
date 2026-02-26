@@ -28,6 +28,18 @@ const cocktailPorId = () =>{
         });   
     },[id]);
 
+    const goPrev = () => {
+        if (!id) return;
+            const prevId = Number(id) - 1;
+            router.push(`/paginacion/${prevId}`);
+    };
+
+    const goNext = () => {
+        if (!id) return;
+        const nextId = Number(id) + 1;
+        router.push(`/paginacion/${nextId}`);
+    };
+
   return (
     <div>
         <div className="app">
@@ -52,6 +64,9 @@ const cocktailPorId = () =>{
         <p onClick={()=>{
             router.back();
         }}><strong>HOME</strong></p>  
+
+        <button onClick={goPrev}>⬅ Anterior</button>
+        <button onClick={goNext}>Siguiente ➡</button>
       
       <h1>Pagina individual y su id es: {id}</h1>
 
