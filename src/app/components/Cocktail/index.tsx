@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { CocktailT } from "../../types";
 import { api } from "../../api/api";
 import "./style.css";
+import Link from "next/link";
 
 export const Cocktail = (params: {id?: number, cocktail?: CocktailT}) => {
 
@@ -18,41 +19,58 @@ export const Cocktail = (params: {id?: number, cocktail?: CocktailT}) => {
     }, [id]);
 
     return (
-        <>
-        {cocktailcito ? (
-        <div className="mainContainer">
-            {cocktailcito.image && <img src={cocktailcito.image} />}
-
-            <div className="characterDataContainer">
-            <h2>{cocktailcito.name}</h2>
-
-            {/* Mostrar detalles SOLO si hay ingredientes */}
-            {cocktailcito.ingredientes &&
-                cocktailcito.ingredientes.length > 0 && (
-                <>
-                    <p>
-                    <strong>Ingredientes:</strong>{" "}
-                    {cocktailcito.ingredientes.join(", ")}
-                    </p>
-                    <p>
-                    <strong>Instrucciones:</strong>{" "}
-                    {cocktailcito.intrucciones}
-                    </p>
-                    <p>
-                    <strong>Cristaleria:</strong>{" "}
-                    {cocktailcito.cristaleria}
-                    </p>
-                    <p>
-                    <strong>Etiquetas:</strong>{" "}
-                    {cocktailcito.etiquetas.join(", ")}
-                    </p>
-                </>
-                )}
-            </div>
-        </div>
-        ) : (
-        <h1>Loading...</h1>
+  <>
+    {cocktailcito ? (
+      <div className="mainContainer">
+        
+        {/* SOLO LA IMAGEN NAVEGA */}
+        {cocktailcito.image && (
+          <Link href={`/paginacion/${cocktailcito.id}`}>
+            <img 
+              src={cocktailcito.image} 
+              alt={cocktailcito.name}
+              style={{ cursor: "pointer" }}
+            />
+          </Link>
         )}
-        </>
+
+        <div className="characterDataContainer">
+
+          {/* SOLO EL NOMBRE NAVEGA */}
+          <Link href={`/paginacion/${cocktailcito.id}`}>
+            <h2 style={{ cursor: "pointer" }}>
+              {cocktailcito.name}
+            </h2>
+          </Link>
+
+          {/* ESTO NO NAVEGA */}
+          {cocktailcito.ingredientes &&
+            cocktailcito.ingredientes.length > 0 && (
+              <>
+                <p>
+                  <strong>Ingredientes:</strong>{" "}
+                  {cocktailcito.ingredientes.join(", ")}
+                </p>
+                <p>
+                  <strong>Instrucciones:</strong>{" "}
+                  {cocktailcito.intrucciones}
+                </p>
+                <p>
+                  <strong>Cristaleria:</strong>{" "}
+                  {cocktailcito.cristaleria}
+                </p>
+                <p>
+                  <strong>Etiquetas:</strong>{" "}
+                  {cocktailcito.etiquetas.join(", ")}
+                </p>
+              </>
+            )}
+
+        </div>
+      </div>
+    ) : (
+      <h1>Loading...</h1>
+    )}
+  </>
 );
 }
