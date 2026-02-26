@@ -37,7 +37,7 @@ const App = () => {
         ].filter(Boolean),
 
         cristaleria: d.strGlass,
-        etiquetas: d.strTags ? d.strTags.split(",") : [],
+        etiquetas: d.strTags ? d.strTags.split(", ") : [],
       }));
 
       setCockatil(mapped);
@@ -65,10 +65,10 @@ const App = () => {
           id: Number(d.idDrink),
           name: d.strDrink,
           image: d.strDrinkThumb,
-          //intrucciones: "",        
-          //ingredientes: [],        
-          //cristaleria: "",
-          //etiquetas: [],
+          intrucciones: "",        
+          ingredientes: [],        
+          cristaleria: "",
+          etiquetas: [],
         }));
 
         setCockatil(mapped);
@@ -100,7 +100,7 @@ const App = () => {
       <button onClick={() => setFinalName(name)}>Search</button>
     </div>
 
-    {loading && <p className="loading">Loading...</p>}
+    {loading && <p className="loading">Searching for more cocktails...</p>}
     {error && <p className="error">{error}</p>}
 
     <div className="charactersGrid">

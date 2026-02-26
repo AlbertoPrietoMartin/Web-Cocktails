@@ -14,22 +14,45 @@ export const Cocktail = (params: {id?: number, cocktail?: CocktailT}) => {
 
 
     useEffect(() => {
-        !params.cocktail && id && api.get(`/character/${id}`).then((e) => setCocktailcito(e.data));
+        !params.cocktail && id && api.get(`/cocktail/${id}`).then((e) => setCocktailcito(e.data));
     }, [id]);
 
-    return(
+    return (
         <>
-            {cocktailcito ? <div className="mainContainer">
-                {cocktailcito?.image && <img src={cocktailcito?.image}/>}
-                <div className="characterDataContainer">
-                    <h2>{cocktailcito?.name}</h2>
-                    <p>Ingredientes: {cocktailcito?.ingredientes}</p>
-                    <p>Instrucciones: {cocktailcito?.intrucciones}</p>
-                    <p>Cristaleria: {cocktailcito?.cristaleria}</p>
-                    <p>Etiquetas: {cocktailcito?.etiquetas}</p>
+        {cocktailcito ? (
+        <div className="mainContainer">
+            {cocktailcito.image && <img src={cocktailcito.image} />}
 
-                </div>
-            </div> : <h1>Loading...</h1>}
+            <div className="characterDataContainer">
+            <h2>{cocktailcito.name}</h2>
+
+            {/* Mostrar detalles SOLO si hay ingredientes */}
+            {cocktailcito.ingredientes &&
+                cocktailcito.ingredientes.length > 0 && (
+                <>
+                    <p>
+                    <strong>Ingredientes:</strong>{" "}
+                    {cocktailcito.ingredientes.join(", ")}
+                    </p>
+                    <p>
+                    <strong>Instrucciones:</strong>{" "}
+                    {cocktailcito.intrucciones}
+                    </p>
+                    <p>
+                    <strong>Cristaleria:</strong>{" "}
+                    {cocktailcito.cristaleria}
+                    </p>
+                    <p>
+                    <strong>Etiquetas:</strong>{" "}
+                    {cocktailcito.etiquetas.join(", ")}
+                    </p>
+                </>
+                )}
+            </div>
+        </div>
+        ) : (
+        <h1>Loading...</h1>
+        )}
         </>
-    )
+);
 }
