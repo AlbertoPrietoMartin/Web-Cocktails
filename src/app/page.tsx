@@ -6,6 +6,7 @@ import { api } from "./api/api";
 import { CocktailT } from "./types";
 import { Cocktail } from "./components/Cocktail";
 import { searchCocktails } from "./api/search";
+import { AlphabetBar } from "./components/AlphabetBar";
 
 const App = () => {
   const [cocktail, setCockatil] = useState<CocktailT[]>([]);
@@ -108,7 +109,13 @@ const App = () => {
         <Cocktail key={c.id} cocktail={c} />
       ))}
     </div>
+
+    <div>  
+      <AlphabetBar />
+    </div>
+
   </div>
+
 
 );
 

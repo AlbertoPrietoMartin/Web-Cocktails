@@ -31,3 +31,17 @@ export const getCocktailById = async (id: number): Promise<CocktailT> => {
     etiquetas: drink.strTags ? drink.strTags.split(", ") : [],
   };
 };
+
+export const getCocktailsByLetter = async (letter: string) => {
+  try {
+    const res = await api.get(`/search.php?f=${letter}`);
+
+    return Array.isArray(res.data.drinks)
+      ? res.data.drinks
+      : [];
+
+  } catch (error) {
+    console.error("Error fetching by letter:", error);
+    return [];
+  }
+};
