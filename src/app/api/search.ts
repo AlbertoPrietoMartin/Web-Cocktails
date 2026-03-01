@@ -34,13 +34,7 @@ export const getCocktailById = async (id: number): Promise<CocktailT> => {
     name: drink.strDrink,
     image: drink.strDrinkThumb,
     intrucciones: drink.strInstructions,
-    ingredientes: [
-      drink.strIngredient1,
-      drink.strIngredient2,
-      drink.strIngredient3,
-      drink.strIngredient4,
-      drink.strIngredient5,
-    ].filter(Boolean),
+    ingredientes,
     cristaleria: drink.strGlass,
     etiquetas: drink.strTags ? drink.strTags.split(", ") : [],
   };

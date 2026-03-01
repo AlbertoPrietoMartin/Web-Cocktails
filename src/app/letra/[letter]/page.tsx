@@ -6,26 +6,68 @@ import { getCocktailsByLetter } from "@/app/api/search";
 import Link from "next/link";
 import { AlphabetBar } from "@/app/components/AlphabetBar";
 import { useRouter } from "next/navigation";
+import { searchCocktails } from "@/app/api/search";
+import { api } from "@/app/api/api";
+import { CocktailT } from "@/app/types";
 
 const CocktailsPorLetra = () => {
 
   const params = useParams();
   const letter = params.letter as string;
-  const [cocktails, setCocktails] = useState<any[]>([]);
   const router = useRouter();
   const {id} = useParams();
   const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [name, setName] = useState<string>("");
-    const [finalName, setFinalName] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [name, setName] = useState<string>("");
+  const [finalName, setFinalName] = useState<string>("");
+  const [cocktail, setCocktail] = useState<CocktailT|null>(null);
+  const [cocktails, setCocktails] = useState<CocktailT[]>([]);
 
+  
+  const fetchCharacters = async (name: string) => {
+    setLoading(true);
+    setError(null);
 
+    try {
+      const res = await api.get(`/search.php?s=${name}`);
+      const drinks = Array.isArray(res.data.drinks) ? res.data.drinks : []; 
+
+      const mapped = drinks.map((d: any) => ({
+        id: Number(d.idDrink),
+        name: d.strDrink,
+        image: d.strDrinkThumb,
+        intrucciones: d.strInstructions,
+        ingredientes: [
+          d.strIngredient1,
+          d.strIngredient2,
+          d.strIngredient3,
+          d.strIngredient4,
+          d.strIngredient5,
+        ].filter(Boolean),
+
+        cristaleria: d.strGlass,
+        etiquetas: d.strTags ? d.strTags.split(", ") : [],
+      }));
+
+      setCocktails(mapped);
+
+    } catch (e) {
+      setError(`Error al obtener los datos: ${e}`);
+      setCocktails([]); 
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (finalName !== "") fetchCharacters(finalName);
+  }, [finalName]);
 
   useEffect(() => {
     if (!letter) return;
 
     getCocktailsByLetter(letter as string).then((res) => {
-      setCocktails(res);
+      setCocktail(res);
     });
 
   }, [letter]);  
@@ -53,7 +95,7 @@ const CocktailsPorLetra = () => {
 
         <h1>Cocktails que empiezan por "{letter}"</h1>
 
-        {Array.isArray(cocktails) && cocktails.map((drink) => (        
+        {Array.isArray(cocktail) && cocktail.map((drink) => (        
           <div key={drink.idDrink} style={{ marginBottom: "20px" }}>
 
           <Link href={`/paginacion/${drink.idDrink}`}>
