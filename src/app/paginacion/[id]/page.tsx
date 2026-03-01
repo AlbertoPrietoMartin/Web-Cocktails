@@ -9,6 +9,7 @@ import { getCocktailById } from "@/app/api/search";
 import Link from "next/link";
 import { Cocktail } from "@/app/components/Cocktail";
 import { useRouter } from "next/navigation";
+import { AlphabetBar } from "@/app/components/AlphabetBar";
 
 const cocktailPorId = () =>{
     
@@ -80,6 +81,10 @@ const cocktailPorId = () =>{
           <p><strong>Etiquetas: </strong>{cocktail.etiquetas.join(", ")}</p>
         </>
       )}
+
+      <div>  
+        <AlphabetBar />
+      </div>
 
     </div>
   );

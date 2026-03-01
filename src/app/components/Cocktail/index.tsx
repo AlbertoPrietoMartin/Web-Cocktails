@@ -36,7 +36,6 @@ export const Cocktail = (params: {id?: number, cocktail?: CocktailT}) => {
 
         <div className="characterDataContainer">
 
-          {/* SOLO EL NOMBRE NAVEGA */}
           <Link href={`/paginacion/${cocktailcito.id}`}>
             <h2 style={{ cursor: "pointer" }}>
               {cocktailcito.name}

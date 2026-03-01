@@ -15,6 +15,20 @@ export const getCocktailById = async (id: number): Promise<CocktailT> => {
   const res = await api.get(`/lookup.php?i=${id}`);
   const drink = res.data.drinks[0];
 
+  const ingredientes = [];
+
+  for (let i = 1; i <= 15; i++) {
+    const ingredient = drink[`strIngredient${i}`];
+    const measure = drink[`strMeasure${i}`];
+
+    if (ingredient) {
+      ingredientes.push({
+        name: ingredient,
+        measure: measure || "",
+      });
+    }
+  }
+
   return {
     id: Number(drink.idDrink),
     name: drink.strDrink,

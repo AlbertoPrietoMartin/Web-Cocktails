@@ -4,12 +4,22 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCocktailsByLetter } from "@/app/api/search";
 import Link from "next/link";
+import { AlphabetBar } from "@/app/components/AlphabetBar";
+import { useRouter } from "next/navigation";
 
 const CocktailsPorLetra = () => {
 
   const params = useParams();
   const letter = params.letter as string;
   const [cocktails, setCocktails] = useState<any[]>([]);
+  const router = useRouter();
+  const {id} = useParams();
+  const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [name, setName] = useState<string>("");
+    const [finalName, setFinalName] = useState<string>("");
+
+
 
   useEffect(() => {
     if (!letter) return;
@@ -18,11 +28,30 @@ const CocktailsPorLetra = () => {
       setCocktails(res);
     });
 
-  }, [letter]);
+  }, [letter]);  
 
   return (
     <div>
-      <h1>Cocktails que empiezan por "{letter}"</h1>
+
+        <div className="app">
+          <div className="searchBar">
+            <input
+              value={name}
+              placeholder="Search cocktails in the bar"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <button onClick={() => setFinalName(name)}><strong>Search</strong></button>
+          </div>
+        
+          {error && <p className="error">{error}</p>}
+          
+          </div>
+        
+        <p onClick={()=>{
+            router.back();
+        }}><strong>HOME</strong></p> 
+
+        <h1>Cocktails que empiezan por "{letter}"</h1>
 
         {Array.isArray(cocktails) && cocktails.map((drink) => (        
           <div key={drink.idDrink} style={{ marginBottom: "20px" }}>
@@ -42,10 +71,20 @@ const CocktailsPorLetra = () => {
             </h3>
           </Link>
           
+          
         </div>
+        
+
       ))}
+
+
+              <div>  
+                <AlphabetBar />
+              </div>
     </div>
+    
   );
+  
 };
 
 export default CocktailsPorLetra;
